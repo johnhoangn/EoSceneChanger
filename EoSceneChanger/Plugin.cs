@@ -5,9 +5,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WebSocketSharp;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
+
 
 namespace EoSceneChanger
 {
@@ -16,6 +18,9 @@ namespace EoSceneChanger
     {
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
+
+        internal static readonly WebSocket BHS_WS = new WebSocket("ws://localhost:6557/socket"); // BS HTTP-Status-Protocol (IN)
+        internal static readonly WebSocket OBS_WS = new WebSocket("ws://localhost:6969"); // OBS-Websocket (OUT)
 
         [Init]
         /// <summary>
