@@ -36,8 +36,8 @@ namespace EoJSON
         public object songHash { get; set; }
         public string levelId { get; set; }
         public double songBPM { get; set; }
-        public int noteJumpSpeed { get; set; }
-        public int noteJumpStartBeatOffset { get; set; }
+        public double noteJumpSpeed { get; set; }
+        public double noteJumpStartBeatOffset { get; set; }
         public int songTimeOffset { get; set; }
         public long start { get; set; }
         public object paused { get; set; }
@@ -68,7 +68,7 @@ namespace EoJSON
         public int combo { get; set; }
         public int maxCombo { get; set; }
         public int multiplier { get; set; }
-        public int multiplierProgress { get; set; }
+        public double multiplierProgress { get; set; }
         public object batteryEnergy { get; set; }
         public bool softFailed { get; set; }
     }

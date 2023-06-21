@@ -1,18 +1,10 @@
 ﻿using IPA;
-using IPA.Config;
-using IPA.Config.Stores;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using WebSocketSharp;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
 
 
-namespace EoSceneChanger
-{
+namespace EoSceneChanger {
     [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin
     {
@@ -20,14 +12,9 @@ namespace EoSceneChanger
         internal static IPALogger Log { get; private set; }
 
         internal static readonly WebSocket BHS_WS = new WebSocket("ws://localhost:6557/socket"); // BS HTTP-Status-Protocol (IN)
-        internal static readonly WebSocket OBS_WS = new WebSocket("ws://localhost:6969"); // OBS-Websocket (OUT)
+        internal static readonly WebSocket OBS_WS = new WebSocket("ws://localhost:9085"); // OBS-Websocket (OUT)
 
         [Init]
-        /// <summary>
-        /// Called when the plugin is first loaded by IPA (either when the game starts or when the plugin is enabled if it starts disabled).
-        /// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
-        /// Only use [Init] with one Constructor.
-        /// </summary>
         public void Init(IPALogger logger)
         {
             Instance = this;
@@ -52,7 +39,7 @@ namespace EoSceneChanger
         {
             Log.Debug("OnApplicationStart");
             new GameObject("EoSceneChangerController").AddComponent<EoSceneChangerController>();
-
+            Log.Debug("Instantiated!");
         }
 
         [OnExit]

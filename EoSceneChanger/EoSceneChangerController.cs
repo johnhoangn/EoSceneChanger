@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using UnityEngine;
 
 using BS_Utils.Utilities;
 
-namespace EoSceneChanger
-{
+namespace EoSceneChanger {
     public class EoSceneChangerController : MonoBehaviour
     {
         public static EoSceneChangerController Instance { get; private set; }
@@ -34,19 +27,32 @@ namespace EoSceneChanger
             // TODO: Move these lambdas to actual callback style methods
             BSEvents.gameSceneLoaded += () =>
             {
-                EoJSON.OBSRequest rqst = new EoJSON.OBSRequest();
-                rqst.RequestType = "SetCurrentScene";
-                rqst.MessageId = "1";
-                rqst.SceneName = "FBT Game";
-                Plugin.OBS_WS.Send(JsonConvert.SerializeObject(rqst));
+                EoJSON.OBSRequest rqst = new EoJSON.OBSRequest(6, "SetCurrentProgramScene", "GameScene");
+                Plugin.OBS_WS.SendAsync(JsonConvert.SerializeObject(rqst), null);
             };
             BSEvents.menuSceneLoaded += () =>
             {
-                EoJSON.OBSRequest rqst = new EoJSON.OBSRequest();
-                rqst.RequestType = "SetCurrentScene";
-                rqst.MessageId = "2";
-                rqst.SceneName = "Desktop Game";
-                Plugin.OBS_WS.Send(JsonConvert.SerializeObject(rqst));
+                EoJSON.OBSRequest rqst = new EoJSON.OBSRequest(6, "SetCurrentProgramScene", "MenuScene");
+                Plugin.OBS_WS.SendAsync(JsonConvert.SerializeObject(rqst), null);
+            };
+
+            Plugin.BHS_WS.OnMessage += (sender, e) =>
+            {
+                Plugin.Log.Info("HTTP WS EVENT! " + e.Data);
+            };
+
+            Plugin.OBS_WS.OnOpen += (sender, e) => {
+                Plugin.Log.Debug("Socket open, identifying");
+                Plugin.OBS_WS.SendAsync("{\"op\":1,\"d\":{\"rpcVersion\":1}}", null);
+                Plugin.Log.Debug("Identified!");
+            };
+
+            Plugin.OBS_WS.OnClose += (sender, e) => {
+                Plugin.Log.Debug("GOT CLOSE RESPONSE! " + e.Reason);
+            };
+
+            Plugin.OBS_WS.OnMessage += (sender, e) => {
+                Plugin.Log.Debug("GOT RESPONSE! " + e.Data);
             };
 
             Plugin.BHS_WS.Connect();
