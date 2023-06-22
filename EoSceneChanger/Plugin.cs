@@ -1,8 +1,7 @@
 ﻿using IPA;
-using WebSocketSharp;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
-
+using System.IO;
 
 namespace EoSceneChanger {
     [Plugin(RuntimeOptions.SingleStartInit)]
@@ -10,9 +9,6 @@ namespace EoSceneChanger {
     {
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
-
-        internal static readonly WebSocket BHS_WS = new WebSocket("ws://localhost:6557/socket"); // BS HTTP-Status-Protocol (IN)
-        internal static readonly WebSocket OBS_WS = new WebSocket("ws://localhost:9085"); // OBS-Websocket (OUT)
 
         [Init]
         public void Init(IPALogger logger)
